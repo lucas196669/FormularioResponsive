@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Formulario Reactivo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleModoOscuro()">
+        {{ modoOscuro() ? '☀️ Claro' : '🌙 Oscuro' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="contenedor">
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+      <ion-list lines="full">
+        <ion-item>
+          <ion-input label="Nombre completo" labelPlacement="floating" type="text"
+            formControlName="nombre"
+            errorText="El nombre es obligatorio (mín. 3 caracteres).">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Correo Electrónico" labelPlacement="floating" type="email"
+            inputmode="email" formControlName="email"
+            errorText="Introduzca un email válido.">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Contraseña" labelPlacement="floating" type="password"
+            formControlName="password"
+            errorText="Mínimo 8 caracteres, letras y números.">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Fecha" labelPlacement="stacked" type="date"
+            formControlName="fecha" [min]="hoy"
+            errorText="Elija una fecha igual o posterior a hoy.">
+          </ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="ion-padding-top">
+        <ion-button expand="block" type="submit"
+          [disabled]="registroForm.invalid || isSubmitting()">
+          @if (!isSubmitting()) {
+            <span>Registrarse</span>
+          } @else {
+            <ion-spinner name="crescent"></ion-spinner>
+          }
+        </ion-button>
+
+        @if (datosEnviados()) {
+          <ion-button expand="block" fill="outline" (click)="descargarPdf()">
+            Descargar PDF de los datos enviados
+          </ion-button>
+        }
+      </div>
+    </form>
+  </div>
+</ion-content>
